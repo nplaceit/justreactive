@@ -175,13 +175,6 @@ class ReactiveVar {
 
 }
 
-//as modules
-//export {Reactive as it, notReactive as not} from './Reactive';
-//export {reactiveProperty as property} from "./reactiveProperty";
-//export {reactiveObject as object} from "./reactiveObject";
-//export {reactiveProxy as proxy} from "./reactiveProxy";
-//export {ReactiveVar as Var} from "./reactiveVar";
-
 Reactive$1.not = notReactive;
 Reactive$1.property = reactiveProperty;
 Reactive$1.object = reactiveObject;
