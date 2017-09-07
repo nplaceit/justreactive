@@ -163,6 +163,7 @@ class ReactiveVar {
             this.currentValue = val;
             this.dependency.changed();
         }
+        return val;
     }
 
     valueOf() {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proxy object</title>
+    <script src="../build/reactive.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    //Reactive proxy object
+    const foo = Reactive.proxy();
+
+    //With proxy we can have dynamic reactive properties
+    foo.bar = 1;
+
+    Reactive(() => console.log(foo.bar));
+
+    setInterval(() => foo.bar++, 500);
+
+</script>
+
+</body>
+</html>
