@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reactive Var</title>
+    <script src="../build/reactive.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    //Reactive var object
+    const foo = new Reactive.Var(10);
+
+    console.log('can be accessed by valueOf', foo * foo);
+
+    Reactive(() =>
+        console.log(foo.get())
+    );
+
+    setInterval(() => foo.set(foo + 1), 500);
+
+
+</script>
+
+</body>
+</html>
