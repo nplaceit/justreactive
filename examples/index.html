@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello world</title>
+    <script src="../build/reactive.js"></script>
+</head>
+<body>
+
+<label>
+    <input type="text" id="input">
+</label>
+
+<button onclick="foo.bar = 'changed';">Change it</button>
+
+<pre id="example"></pre>
+
+<script type="text/javascript">
+
+    //Reactive object properties
+    const foo = Reactive.object({bar: 'default'});
+
+    //Input element
+    const input = document.getElementById('input');
+
+    //Change foo.bar on input keydown
+    input.addEventListener('keydown', function () {
+        setTimeout(() => foo.bar = this.value, 0);
+    });
+
+    //Reactive code is rerun every time foo.bar changes
+    Reactive(() => {
+        document.getElementById('example').innerHTML = foo.bar;
+        input.value = foo.bar; //In case foo.bar is changed from somewhere outside input's keydown event
+    });
+
+</script>
+
+</body>
+</html>
