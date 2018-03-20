@@ -1,14 +1,27 @@
 {
   "name": "reactivejs",
-  "version": "0.0.1",
-  "description": "Reactive Javascript",
+  "version": "0.3.2",
+  "release": "V 0.3.2",
+  "description": "Ultra light-weight JavaScript reactive programming library",
   "main": "build/reactive.js",
+  "keywords": [
+    "reactive",
+    "library"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nplaceit/reactivejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nplaceit/reactivejs/issues"
+  },
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w -m inline"
   },
   "author": "Daniel MF <echo.dmf@gmail.com>",
   "license": "MIT",
+  "licenseUrl": "https://opensource.org/licenses/mit-license.php",
   "devDependencies": {
     "rollup": "^0.49.2",
     "rollup-watch": "^4.3.1"

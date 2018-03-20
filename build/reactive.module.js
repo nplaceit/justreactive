@@ -48,7 +48,7 @@ function notReactive(handler, thisObject) {
         return;
     }
 
-    const previousState = trackingActive;
+    const previousState = Reactive$1.trackingActive;
 
     Reactive$1.trackingActive = false;
 
@@ -77,6 +77,11 @@ class Dependency {
     }
 
     changed() {
+
+        if (!Reactive$1.active) {
+            return;
+        }
+
         for (const [, computation] of Object.entries(this.computations)) {
 
             const previousComputation = Reactive$1.currentComputation;

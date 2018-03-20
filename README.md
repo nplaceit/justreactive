@@ -1,2 +1,2 @@
 # reactivejs
-A simple JavaScript reactive programming library.
+Ultra light-weight JavaScript reactive programming library.

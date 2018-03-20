@@ -19,7 +19,7 @@ function notReactive(handler, thisObject) {
         return;
     }
 
-    const previousState = trackingActive;
+    const previousState = Reactive.trackingActive;
 
     Reactive.trackingActive = false;
 

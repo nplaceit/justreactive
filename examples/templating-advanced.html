@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Templating example</title>
+    <script src="../build/reactive.js"></script>
+</head>
+<body>
+
+<section id="app">
+
+    <div>
+        <label><input type="text" id="input"></label>
+    </div>
+
+    <template is="example"></template>
+
+</section>
+
+
+<template id="example">
+
+    <h3>Foo: {{foo}}</h3>
+
+    <div>
+        <h3>{{bar}}</h3>
+        <template is="sub" context="sub"></template>
+    </div>
+
+</template>
+
+<template id="sub">
+    {{name}}
+</template>
+
+<script type="text/javascript">
+
+
+    function instantiateTemplates(element, context) {
+
+        const childNodes = [...element.querySelectorAll('template[is]')];
+
+        for (const node of childNodes) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.hasAttribute('is')) {
+
+                    const subContext = node.getAttribute('context');
+
+                    const template = document.getElementById(node.getAttribute('is')),
+                        clone = document.importNode(template.content, true),
+                        nodeClone = document.importNode(node.content, true);
+
+                    for (const cloneContentArea of clone.querySelectorAll('template:not([is])')) {
+                        if (cloneContentArea.hasAttribute('for')) {
+                            const forId = cloneContentArea.getAttribute('for');
+                            const matchContent = document.importNode(nodeClone.querySelector(`[for="${forId}"]`).content, true);
+                            cloneContentArea.parentNode.replaceChild(matchContent, cloneContentArea);
+                        } else {
+                            let area = nodeClone.querySelector('template:not([for]):not([is])');
+
+                            if (area) {
+                                area = document.importNode(area.content, true);
+                            }
+
+                            cloneContentArea.parentNode.replaceChild(
+                                area || nodeClone,
+                                cloneContentArea
+                            );
+                        }
+                    }
+
+                    if (subContext) {
+
+                        //Reactive(() => {
+
+                        Reactive(() => {
+                            const sub = Reactive.object(context[subContext]);
+                            applyContextToElement(clone, sub);
+                            instantiateTemplates(clone, sub);
+                        });
+
+                        /*const sub = context[subContext];
+
+                        window.A = sub;
+
+                        applyContextToElement(clone, sub);
+                        instantiateTemplates(clone, sub);*/
+
+                        //});
+
+                    } else {
+                        applyContextToElement(clone, context);
+                        instantiateTemplates(clone, context);
+                    }
+
+                    node.parentNode.replaceChild(clone, node);
+                }
+            }
+        }
+    }
+
+    class Template {
+    }
+
+    Template.start = function () {
+        instantiateTemplates(document.getElementById('app'), context);
+    };
+
+
+    //Template context
+    const context = Reactive.proxy({ //or .object
+        foo: 1,
+        bar: 'Lorem ipsum',
+        sub: {
+            name: 'lol'
+        }
+    });
+
+    Template.start();
+
+    /**
+     * Applies the context to the template instance
+     * @param {Node} element
+     * @param context
+     */
+    function applyContextToElement(element, context) {
+
+        if (element.attributes) {
+            for (let attr of element.attributes) {
+
+                const attrValue = attr.value;
+                let attrRemoved = false;
+
+                Reactive(() => {
+                    const res = applyContext(attrValue, context);
+
+                    if (res === 'false' || !res) {
+                        element.removeAttribute(attr.name);
+                        attrRemoved = true;
+                    } else if (res === 'true') {
+                        element.setAttribute(attr.name, '');
+                        attr = element.attributes.getNamedItem(attr.name);
+                    } else {
+                        if (attrRemoved) {
+                            attrRemoved = false;
+                            element.setAttribute(attr.name, res);
+                            attr = element.attributes.getNamedItem(attr.name);
+                        } else {
+                            attr.value = res;
+                        }
+                    }
+
+                });
+            }
+        }
+
+        for (const node of element.childNodes) {
+            switch (node.nodeType) {
+                case Node.TEXT_NODE:
+                    const templateText = node.textContent;
+                    Reactive(() =>
+                        node.textContent = applyContext(templateText, context)
+                    );
+                    break;
+                case Node.ELEMENT_NODE:
+                    applyContextToElement(node, context);
+                    break;
+            }
+        }
+
+    }
+
+    /**
+     * Applies the context to a text content
+     * @param {String} text
+     * @param {Object} context
+     * @returns {XML|string|*|void}
+     */
+    function applyContext(text, context) {
+        return text.replace(/{{([^}]+)}}/g, function (match, res) {
+            return context[res];
+        });
+    }
+
+
+    setInterval(() => context.foo++, 1000 / 60);
+
+    const input = document.getElementById('input');
+    input.value = context.bar;
+
+    input.addEventListener('keydown', function () {
+        setTimeout(() => context.bar = this.value, 0);
+    });
+
+</script>
+
+</body>
+</html>

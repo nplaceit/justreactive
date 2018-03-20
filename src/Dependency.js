@@ -16,6 +16,11 @@ class Dependency {
     }
 
     changed() {
+
+        if (!Reactive.active) {
+            return;
+        }
+
         for (const [, computation] of Object.entries(this.computations)) {
 
             const previousComputation = Reactive.currentComputation;
