@@ -1,6 +1,6 @@
 {
   "name": "justreactive",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "release": "V 0.3.2",
   "description": "Ultra light-weight JavaScript reactive programming library",
   "main": "build/reactive.js",
