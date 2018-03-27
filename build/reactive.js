@@ -17,8 +17,9 @@
 
 	    execute() {
 	        Reactive$1.active = false;
-	        this.handler.call(this.handlerThisObject);
+	        const result = this.handler.call(this.handlerThisObject);
 	        Reactive$1.active = true;
+	        return result;
 	    }
 
 	    invalidate() {
@@ -41,10 +42,11 @@
 	function Reactive$1(handler, thisObject) {
 	    if (Reactive$1.active) {
 	        Reactive$1.currentComputation = new Computation(handler, thisObject);
-	        Reactive$1.currentComputation.execute();
+	        const result = Reactive$1.currentComputation.execute();
 	        Reactive$1.currentComputation = null;
+	        return result;
 	    } else {
-	        handler();
+	        return handler();
 	    }
 	}
 
@@ -177,21 +179,21 @@
 	        return val;
 	    }
 
-	    valueOf() {
+	    [Symbol.toPrimitive]() {
 	        return this.get();
 	    }
 
-	    toString() {
-	        return String(this.valueOf());
-	    }
+	}
 
+	function reactiveVar(defaultValue) {
+	    return new ReactiveVar(defaultValue);
 	}
 
 	Reactive$1.not = notReactive;
 	Reactive$1.property = reactiveProperty;
 	Reactive$1.object = reactiveObject;
 	Reactive$1.proxy = reactiveProxy;
-	Reactive$1.Var = ReactiveVar;
+	Reactive$1.var = reactiveVar;
 	Reactive$1.Dependency = Dependency;
 
 	return Reactive$1;

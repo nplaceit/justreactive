@@ -6,10 +6,11 @@ Reactive.isRecomputing = false;
 function Reactive(handler, thisObject) {
     if (Reactive.active) {
         Reactive.currentComputation = new Computation(handler, thisObject);
-        Reactive.currentComputation.execute();
+        const result = Reactive.currentComputation.execute();
         Reactive.currentComputation = null;
+        return result;
     } else {
-        handler();
+        return handler();
     }
 }
 

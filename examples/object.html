@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reactive Proxy Object</title>
+    <title>Reactive Object Properties</title>
     <script src="../build/reactive.js"></script>
     <link rel="stylesheet" href="static/style.css">
 </head>
@@ -18,12 +18,7 @@
 <script type="text/javascript">
 
     //Reactive proxy object
-    const foo = Reactive.proxy();
-
-    //With proxy we can have dynamic reactive properties
-    foo.bar = 'lorem ipsum';
-
-
+    const foo = Reactive.object({bar: 'lorem ipsum'});
     const input = document.querySelector('input');
     const output = document.querySelector('strong');
 

@@ -20,14 +20,14 @@ class ReactiveVar {
         return val;
     }
 
-    valueOf() {
+    [Symbol.toPrimitive]() {
         return this.get();
-    }
-
-    toString() {
-        return String(this.valueOf());
     }
 
 }
 
-export {ReactiveVar};
+function reactiveVar(defaultValue) {
+    return new ReactiveVar(defaultValue);
+}
+
+export {reactiveVar};

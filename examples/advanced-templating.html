@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Templating example</title>
     <script src="../build/reactive.js"></script>
+    <link rel="stylesheet" href="static/style.less">
 </head>
 <body>
 
@@ -24,13 +26,8 @@
 
     <div>
         <h3>{{bar}}</h3>
-        <template is="sub" context="sub"></template>
     </div>
 
-</template>
-
-<template id="sub">
-    {{name}}
 </template>
 
 <script type="text/javascript">
@@ -43,8 +40,6 @@
         for (const node of childNodes) {
             if (node.nodeType === Node.ELEMENT_NODE) {
                 if (node.hasAttribute('is')) {
-
-                    const subContext = node.getAttribute('context');
 
                     const template = document.getElementById(node.getAttribute('is')),
                         clone = document.importNode(template.content, true),
@@ -69,29 +64,8 @@
                         }
                     }
 
-                    if (subContext) {
-
-                        //Reactive(() => {
-
-                        Reactive(() => {
-                            const sub = Reactive.object(context[subContext]);
-                            applyContextToElement(clone, sub);
-                            instantiateTemplates(clone, sub);
-                        });
-
-                        /*const sub = context[subContext];
-
-                        window.A = sub;
-
-                        applyContextToElement(clone, sub);
-                        instantiateTemplates(clone, sub);*/
-
-                        //});
-
-                    } else {
-                        applyContextToElement(clone, context);
-                        instantiateTemplates(clone, context);
-                    }
+                    applyContextToElement(clone, context);
+                    instantiateTemplates(clone, context);
 
                     node.parentNode.replaceChild(clone, node);
                 }
@@ -108,12 +82,9 @@
 
 
     //Template context
-    const context = Reactive.proxy({ //or .object
+    const context = Reactive.object({ //or .proxy
         foo: 1,
         bar: 'Lorem ipsum',
-        sub: {
-            name: 'lol'
-        }
     });
 
     Template.start();

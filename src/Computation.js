@@ -13,8 +13,9 @@ class Computation {
 
     execute() {
         Reactive.active = false;
-        this.handler.call(this.handlerThisObject);
+        const result = this.handler.call(this.handlerThisObject);
         Reactive.active = true;
+        return result;
     }
 
     invalidate() {
