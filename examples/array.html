@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reactive Array</title>
+    <script src="../build/reactive.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<label>
+    <input type="text" value="dolor">
+</label>
+
+<button onclick="addItem()">add</button>
+
+<ul></ul>
+
+<script type="text/javascript">
+
+    const foo = Reactive.array(1, 2, 3, 4);
+
+    Reactive(() =>
+        console.log(foo.join())
+    );
+
+    setInterval(() => foo.push(foo.length + 1), 500);
+
+</script>
+
+</body>
+</html>

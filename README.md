@@ -45,6 +45,20 @@ setInterval(() => foo.bar++, 500);
 
 ```
 
+## Reactive Array
+
+```javascript
+
+const foo = Reactive.array(1, 2, 3, 4);
+
+Reactive(() =>
+    console.log(foo.join())
+);
+
+setInterval(() => foo.push(foo.length + 1), 500);
+
+```
+
 ## Download the library
 
 Install via [npm](https://www.npmjs.com)
