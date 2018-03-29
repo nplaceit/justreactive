@@ -1,6 +1,6 @@
 import {Dependency} from "./Dependency";
 
-function reactiveProperty(object, name, defaultValue, stock) {
+function reactiveProperty(object, name, defaultValue) {
 
     const dep = new Dependency;
 
@@ -18,17 +18,6 @@ function reactiveProperty(object, name, defaultValue, stock) {
             return val;
         }
     });
-
-    if (stock) {
-        if (!stock.dependencyFor) {
-            Object.defineProperty(stock, 'dependencyFor', {
-                enumerable: false,
-                value: {}
-            })
-        }
-
-        stock.dependencyFor[name] = dep;
-    }
 
     return defaultValue;
 
