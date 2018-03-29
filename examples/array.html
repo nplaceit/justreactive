@@ -19,13 +19,33 @@
 
 <script type="text/javascript">
 
-    const foo = Reactive.array(1, 2, 3, 4);
+    //Reactive Array
+    const foo = Reactive.array('lorem', 'ipsum');
 
-    Reactive(() =>
-        console.log(foo.join())
-    );
+    const list = document.querySelector('ul');
 
-    setInterval(() => foo.push(foo.length + 1), 500);
+    Reactive(() => {
+        list.innerHTML = foo.map((value, index) => `
+            <li>
+                ${value}
+                <button onclick="remove(${index})">remove</button>
+            </li>
+        `).join('');
+    });
+
+    const input = document.querySelector('input');
+
+    function addItem() {
+        if (input.value) {
+            foo.push(input.value);
+            input.value = '';
+        }
+        input.focus();
+    }
+
+    function remove(index) {
+        foo.splice(index, 1);
+    }
 
 </script>
 
