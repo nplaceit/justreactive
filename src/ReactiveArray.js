@@ -35,6 +35,16 @@ class ReactiveArray extends Array {
         return this.length;
     }
 
+    set(index, value) {
+        this[index] = value;
+        this._dep.changed();
+    }
+
+    get(index) {
+        this._dep.depends();
+        return this[index];
+    }
+
     push() {
         return extendChange(this, super.push, arguments);
     }
